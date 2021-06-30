@@ -1,0 +1,730 @@
+<?php 
+
+$moduleName = 'Poptin_Magento2';
+
+$poptinidcheck = false;
+if (!empty($block->getPoptinClientId()))
+{
+    $poptinidcheck = true;
+}
+$writeReviewUrl = "https://marketplace.magento.com/poptin-magento2.html"; //!!
+$poptinClienId=$block->getPoptinClientId();
+$poptinUserid=$poptinClienId!=""?$poptinClienId:"USERIDHERE";
+if (!empty($block->getPoptinEmbedType()))
+{
+$poptinEtypeId = $block->getPoptinEmbedType();
+}
+else
+{
+$poptinEtypeId="2";
+}
+$poptin_etype_arr=array(
+"1"=>"<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$poptinUserid."' async='true'></script>",
+"2"=>"<script>var poptinAfterPageLoad = true;</script><script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$poptinUserid."' async='true'></script>",
+"3"=>"<script>var poptinAfterPageLoad = 'noConflict';</script><script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$poptinUserid."' async='true'></script>");
+
+?>
+<link rel="stylesheet" id="bootstrap-modal-css-css" href="<?php echo $block->getViewFileUrl($moduleName.'::css/bootstrap.min.css'); ?>" type="text/css" media="all">
+<link rel="stylesheet" id="poptin-admin-css" href="<?php echo $block->getViewFileUrl($moduleName.'::css/poptin-admin.css'); ?>" type="text/css" media="all">
+<style>
+.poptin-help-btn {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	z-index: 1001;
+}
+.poptin-help-btn a {
+	display: block;
+	border: solid 3px #e0dede;
+	width: 50px;
+	height: 50px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	position: relative;
+}
+.poptin-help-btn a img {
+	width: 100%;
+	height: auto;
+	display: block;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+}
+.poptin-help-btn span.tooltiptext {
+	position: absolute;
+	background: #000;
+	font-size: 12px;
+	color: #fff;
+	top: -35px;
+	width: 140%;
+	text-align: center;
+	left: -20%;
+	border-radius: 5px;
+	direction: ltr;
+}
+.poptin-help-btn span.tooltiptext:after {
+	bottom: -7px;
+	content: "";
+	transform: translateX(-50%);
+	/* height: 7px; */
+	width: 0px;
+	border-width: 8px 6px 0;
+	border-style: solid;
+	border-color: #000 transparent transparent;
+	left: 50%;
+	position: absolute;
+}
+.poptin-help-form {
+	position: fixed;
+	right: 85px;
+	border: solid 1px #e9edf0;
+	bottom: 25px;
+	background: #fff;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	width: 320px;
+	z-index: 1001;
+	direction: ltr;
+	opacity: 1;
+	transition: 0.4s;
+	-webkit-transition: 0.4s;
+	-moz-transition: 0.4s;
+	display: none;
+	box-shadow: 0px 0px 10px 0px rgba(4, 4, 4, 0.14);
+}
+.poptin-help-header {
+	background: #f4f4f4;
+	border-bottom: solid 1px #e9edf0;
+	padding: 12px 20px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	font-size: 16px;
+	text-align: center;
+}
+.poptin-help-content {
+	margin-bottom: 10px;
+	padding: 20px 20px 10px;
+}
+.poptin-help-form p {
+	margin: 0 0 1em;
+}
+.poptin-form-field {
+	margin-bottom: 10px;
+}
+.poptin-form-field input, .poptin-form-field textarea {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 5px;
+	width: 100%;
+	box-sizing: border-box;
+	border: solid 1px #c5c5c5;
+	min-height: 34px;
+}
+.poptin-help-button {
+	border: none;
+	padding: 8px 0;
+	width: 100%;
+	background: #ff6624;
+	color: #fff;
+	border-radius: 18px;
+}
+p.fm_error {
+	border: 1px solid #fdcaca !important;
+	color: #e42323;
+	border-radius: 6px;
+	padding: 6px 10px;
+	background: #fdcaca;
+}
+div#poptin_success_msg {
+	background: #a5dcab;
+	border-radius: 10px;
+	text-align: center;
+	color: #0c6715;
+	margin-bottom: 10px;
+	font-size: 12px;
+}
+div#poptin_success_msg p {
+	margin: 0px;
+	padding: 10px;
+}
+a.adv-setting-button {
+	background-color: #000000;
+	width: 240px;
+	height: 50px;
+	display: block;
+	margin: 0 auto;
+	line-height: 50px;
+	text-decoration: none;
+	border-radius: 50px;
+	color: #ffffff;
+	font-size: 20px;
+	font-weight: 400;
+	text-align: center;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+}
+.custom-radio-item {
+	display: block;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-weight: 400;
+	line-height: 18px;
+	font-size: 13px
+}
+.custom-radio {
+	display: none
+}
+.custom-radio-mark {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+	width: 25px;
+	height: 25px;
+	border: 2px solid #333;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+}
+.custom-radio-mark:before {
+	content: '';
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -6px 0 0 -6px;
+	height: 7px;
+	width: 13px;
+	border: solid #ffffff;
+	border-width: 0 0 3px 3px;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+.custom-radio-desc {
+	font-weight: 400
+}
+.custom-radio:checked ~ .custom-radio-mark {
+	border: 2px solid #0ba000;
+	background: #0ba000;
+}
+.custom-radio:checked ~ .custom-radio-mark:before {
+	display: block
+}
+.custom-radio:disabled ~ .custom-radio-mark {
+	border: 2px solid #0ba000;
+	background: #0ba000;
+}
+.custom-radio:disabled ~ .custom-radio-mark:before {
+	border-color: #f8f9fa
+}
+.poptin-form-elem.elem-inline .custom-radio-item {
+	display: block;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+.poptin-code-block {
+	display: inline-block;
+	width: 98%;
+	padding: 0px;
+	border: 1px dashed #ccc;
+	background: #f3f3f3;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	height: auto;
+	overflow: hidden;
+}
+.poptin-code-block textarea {
+	display: block;
+	width: 100%;
+	font-size: 15px;
+	border: 0px;
+	background: transparent;
+	padding: 10px 0px 10px 10px;
+	text-align: left;
+	margin-bottom: 0px;
+	vertical-align: middle;
+}
+button.button_ads_save {
+	padding: 10px;
+	width: 150px;
+	font-size: 18px;
+	border-radius: 20px;
+	background-color: #ff4e00;
+	background-image: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
+	border: 0px;
+	color: #fff;
+}
+button.button_ads_save:hover {
+	background: #ff4e00;
+}
+.poptin-eheading h3 {
+	font-size: 18px;
+}
+.close_lbox {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+.close_lbox a img {
+	width: 30px;
+}
+.poptin-save-block {
+	text-align: center;
+}
+.modal {
+	display: none;
+	opacity: 0;
+}
+/*Lightbox css*/
+.fade-in, .fade-out {
+	-moz-transition: opacity .3s;
+	-o-transition: opacity .3s;
+	-webkit-transition: opacity .3s;
+	transition: opacity .3s;
+}
+.fade-out {
+	opacity: 0!important;
+}
+.fade-in {
+	opacity: 1!important;
+}
+.poptin-modal-overlay {
+	position: fixed;
+	overflow: hidden;
+	z-index: 2147483647;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.81);
+	background-repeat: repeat;
+	-webkit-overflow-scrolling: touch;
+	-webkit-backface-visibility: hidden;
+	display: none;
+}
+.poptin-modal-overlay.fade .modal-dialog {
+	-webkit-transform: translate(0, -25%);
+	-ms-transform: translate(0, -25%);
+	-o-transform: translate(0, -25%);
+	transform: translate(0, -25%);
+	-webkit-transition: -webkit-transform .3s ease-out;
+	-o-transition: -o-transform .3s ease-out;
+	transition: transform .3s ease-out;
+}
+.poptin-modal-overlay.in .modal-dialog {
+	-webkit-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0);
+	margin-top: 110px;
+}
+.poptin-moda-overlay:before {
+	content: "";
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	width: 1px;
+	margin-right: -1px;
+	margin-left: -.25em;
+}
+.poptin-modal {
+	display: inline-block;
+	vertical-align: middle;
+	max-height: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+	overflow: auto;
+}
+.poptin-modal.container {
+	margin: 0 auto;
+	width: 95%;
+	max-width: 1140px;
+}
+.poptin-modal-content {
+	background-color: #fff;
+	padding: 1em;
+	text-align: left;
+	max-height: 100%;
+	overflow: auto;
+}
+.poptin-modal-header {
+	padding-right: 4.555em;
+}
+.poptin-modal-footer, .poptin-modal-header {
+	padding: 1px 1em;
+	margin: -1px 0;
+	width: 100%;
+	color: #fff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	overflow: hidden;
+}
+.poptin-modal-close {
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 2;
+	display: inline-block;
+	padding: .83em;
+	color: #fff;
+	font-size: 1.5em;
+	font-weight: 700;
+	text-decoration: none;
+}
+</style>
+<script type="text/x-magento-init">
+           { "*":
+             {
+               "poptin": {
+                 "parrotGifUrl": "<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot.gif'); ?>",
+                 "parrotPngUrl": "<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot.png'); ?>",
+                 "poptinRegisterApiUrl": "https://app.popt.in/api/marketplace/register",
+                 "poptinAuthApiUrl": "https://app.popt.in/api/marketplace/auth",
+                 "poptinDeactivatePluginUrl" : "<?php echo $block->getPoptinDeactivatePluginUrl(); ?>",
+                 "poptinRedirectToLoginUrl" : "<?php echo $block->getPoptinRedirectToLoginUrl(); ?>",
+				 "poptinAjaxUrl" : "<?php echo $block->getUrl('poptin/actions/sendmail'); ?>"
+               }
+             }
+           }
+</script>
+<div class="poptin-overlay"></div>
+<div class="wrap poptinWrap"> 
+  <!-- Logo -->
+  <div class="poptinLogo"><img src="<?php echo $block->getViewFileUrl($moduleName.'::images/poptinlogo.png'); ?>"/></div>
+  <div class="poptinLogged" style="<?php echo($poptinidcheck ? 'display:block' : 'display:none') ?>"> 
+    <!-- Here will render after login/create account view -->
+    <div class="poptinLoggedBg"
+             style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/loggedinbg.png'); ?>) no-repeat">
+      <form id="logmein_form" action="poptin/actions/createaccount" method="POST">
+        <input type="hidden" name="action" value="poptin_logmein" class="poptin_input"/>
+        <input type="hidden" name="logmein" value="true" class="poptin_input"/>
+        <input type="hidden" name="security" class="poptin_input"
+                       value="<?php //!! echo wp_create_nonce("poptin-fe-login"); ?>"/>
+      </form>
+      <h2 class="loggedintitle"><?php echo  __("You're all set!"); ?></h2>
+      <div class="tinyborder"></div>
+      <span class="everythinglooks"><?php echo __("Click on the button below<br>to manage your poptins"); ?></span> <img src="<?php echo $block->getViewFileUrl($moduleName.'::images/vicon.png'); ?>"/> <a href="<?php echo $block->getPoptinRedirectToLoginUrl(); ?>" target="_blank"
+               class="ppcontrolpanel goto_dashboard_button_pp_updatable"><?php echo __("Go to Dashboard"); ?></a> <a href="#logout" class="pplogout">
+      <?php  echo __("Deactivate Poptin"); ?>
+      </a> </div>
+    <div class="clearfix"></div>
+    <!-- -->
+    <div class="poptin-adv-setting"> <a href="#" onclick="openPoptinModal('advanceSetting')" class="adv-setting-button"><?php echo __("Advanced Settings"); ?></a> </div>
+    <div class="poptinContent review">
+      <h2 class="poptinTitle"><?php echo __("Let us know what you think 🙂"); ?></h2>
+      <div class="tinyborder"></div>
+      <div class="reviewbox"
+                 style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/reviewframe.png'); ?>) no-repeat">
+        <div class="reviewtitle"> <?php echo __("If Poptin already helped you to grow your business, please click on the button below and leave a positive review"); ?>
+          <?php /*<img draggable="false" class="emoji" alt="🙂" src="https://s.w.org/images/core/emoji/2.4/svg/1f642.svg">*/ ?>
+          🙂 </div>
+        <div class="reviewstars"> <img src="<?php echo $block->getViewFileUrl($moduleName.'::images/stars.png'); ?>"/> </div>
+        <div class="reviewlink"> <a href="<?php echo $writeReviewUrl; ?>"
+                       target="_blank"><?php echo __("Write a Review"); ?></a> </div>
+      </div>
+    </div>
+  </div>
+  <div class="ppaccountmanager" style="<?php echo($poptinidcheck ? 'display:none' : 'display:block') ?>">
+    <div class="popotinRegister"> 
+      <!-- Here will render register view -->
+      <div class="accountWrapper"
+                 style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/accountboxsignup.png'); ?>) no-repeat">
+        <div class="poptinWrapInner">
+          <div class="topAccountBar sign_up_for_free_wrapper"> <span class="ppRegister active"><?php echo __("Sign up for free"); ?></span> <span class="ppSeparator"></span> <a href="#" class="ppLogin"><?php echo __("Already have account?"); ?></a>
+            <div class="clearfix"></div>
+          </div>
+          <form id="registration_form" class="ppFormRegister ppForm" action="<?php echo $block->getUrl('poptin/actions/createaccount'); ?>" target=""
+                          method="POST">
+            <input type="hidden" name="form_key" value="<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>" />
+            <input class="poptin_input" type="text" id="email" name="email" placeholder="Enter your email"
+                               value="<?php //echo $admin_email; ?>"
+                               placeholder="example@poptin.com"/>
+            <input type="hidden" name="action" class="poptin_input" value="poptin_register"/>
+            <input type="hidden" name="register" class="poptin_input" value="true"/>
+            <input type="hidden" name="security" class="poptin_input"
+                               value="<?php //!! echo wp_create_nonce("poptin-fe-register"); ?>"/>
+            <div class="bottomForm">
+              <input class="ppSubmit pp_signup_btn poptin_signup_button" type="submit"
+                                   value="<?php echo __("Sign Up"); ?>"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="popotinLogin" style="display:none"> 
+      <!-- Here will render login view -->
+      <div class="accountWrapper"
+                 style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/accountbox.png'); ?>) no-repeat">
+        <div class="poptinWrapInner">
+          <div class="topAccountBar poptin_login_wrapper"> <span class="ppLogin active"><?php echo __("Enter your user ID"); ?></span><span
+                                class="ppSeparator"></span><a href="#"
+                                                              class="ppRegister"><?php echo __("Sign up for free"); ?></a> </div>
+          <form id="map_poptin_id_form" class="ppFormLogin ppForm" action="<?php echo $block->getUrl('poptin/actions/saveuserid'); ?>" method="post">
+            <input type="hidden" name="form_key" value="<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>" />
+            <input type="text" name="poptin_user_id" value="" placeholder="Enter your User ID" class="poptin_input"/>
+            <div class="bottomForm remove_top_margin"> <a href="javascript:void(0);"  onclick="openPoptinModal('whereIsMyId')";
+                               class="wheremyid"><?php echo __("Where is my user ID?"); ?></a>
+              <input class="ppSubmit poptin_submit_button" type="submit" value="<?php echo __("Connect"); ?>"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="poptinContent">
+      <h2 class="poptinTitle"><?php echo __("Create your first poptin with ease"); ?></h2>
+      <div class="tinyborder"></div>
+      <div class="youtubeVideoContainer"
+                 style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/youtubeBackground.png'); ?>) no-repeat">
+        <div class="youtubeVideo">
+          <iframe width="905" height="509"
+                            src="https://www.youtube.com/embed/R_B8L3abt7Q?rel=0&amp;showinfo=0" frameborder="0"
+                            allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="poptinContent whyChoose">
+      <h2 class="poptinTitle"><?php echo __("Here’s What Poptin Can Do For You"); ?></h2>
+      <div class="tinyborder"></div>
+      <div class="innerContent">
+        <div class="box boxEnv">
+          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/envelope.png'); ?>"/></div>
+          <div class="boxTitle"><?php echo __("Get more email subscribers"); ?></div>
+        </div>
+        <div class="box boxLeads">
+          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/fanel.png'); ?>"/></div>
+          <div class="boxTitle"><?php echo __("Get more leads and sales"); ?></div>
+        </div>
+        <div class="box boxCart">
+          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/wheel.png'); ?>"/></div>
+          <div class="boxTitle"><?php echo __("Reduce shopping cart abandonedment"); ?></div>
+        </div>
+        <div class="box boxHeart">
+          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl($moduleName.'::images/heart.png'); ?>"/></div>
+          <div class="boxTitle"><?php echo __("Increare visitors' engagement"); ?></div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="poptinContent clients">
+      <h2 class="poptinTitle"><?php echo __("Digital Marketers ♥ Poptin"); ?></h2>
+      <div class="tinyborder"></div>
+      <div class="innerContent">
+        <div class="boxclient client1">
+          <div class="boxclientHead"
+                         style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/client1bg.png'); ?>) no-repeat"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/profile1.png'); ?>"/> </div>
+          <div class="clientboxtext"> <span class="clientName"><?php echo __("Michael Kamleitner"); ?></span> <span class="clientCompany"><?php echo __("CEO, Walls.io"); ?></span> <?php echo __("Getting started with poptin was a breeze – we've implemented the widget and connected it to our newsletter within minutes. Our conversion rate skyrocketed!"); ?> </div>
+        </div>
+        <div class="boxclient client2">
+          <div class="boxclientHead"
+                         style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/client2bg.png'); ?>) no-repeat"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/profile2.png'); ?>"/> </div>
+          <div class="clientboxtext"> <span class="clientName"><?php echo __("Deepak Shukla"); ?></span> <span class="clientCompany"><?php echo __("CEO, Purr Traffic"); ?></span> <?php echo __("Been v.impressed with Poptin and the team behind it so far. Great responses times from support. The roadmap looks great. I highly recommend."); ?> </div>
+        </div>
+        <div class="boxclient client3">
+          <div class="boxclientHead"
+                         style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/client3bg.png'); ?>) no-repeat"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/profile3.png'); ?>"/> </div>
+          <div class="clientboxtext"> <span class="clientName"><?php echo __("Michael Voiskoun"); ?></span> <span class="clientCompany"><?php echo __("Marketing manager, Engie"); ?></span> <?php echo __("It's super easy to use, doesn't require any prior coding skill. The team at Poptin is really helpful, providing great support, and adding always more features!"); ?> </div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="poptinContent review">
+      <h2 class="poptinTitle"><?php echo __("Let us know what you think 🙂"); ?></h2>
+      <div class="tinyborder"></div>
+      <div class="reviewbox"
+                 style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/reviewframe.png'); ?>) no-repeat">
+        <div class="reviewtitle"> <?php echo __("If Poptin already helped you to grow your business, please click on the button below and leave a positive review"); ?>
+          <?php /*<img draggable="false" class="emoji" alt="🙂" src="https://s.w.org/images/core/emoji/2.4/svg/1f642.svg">*/ ?>
+          🙂 </div>
+        <div class="reviewstars"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/stars.png'); ?>"/> </div>
+        <div class="reviewlink"> <a href="<?php echo $writeReviewUrl; ?>"
+                       target="_blank"><?php echo __("Write a Review"); ?></a> </div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="poptinContent footer"> <img class="parrot" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot.png'); ?>"/> <span class="poptinlove"><?php echo __("Visit us at "); ?> <a
+                    href="https://www.poptin.com/?utm_source=magento2"
+                    target="_blank">poptin.com</a></span> </div>
+</div>
+
+<!-- Modal -->
+<div id="whereIsMyId" class="poptin-modal-overlay fade" role="dialog" style="direction: ltr;">
+  <div class="modal-dialog poptin-lightbox">
+    <div class="poptin-lightbox-header">Where is my user ID?</div>
+    <div class="poptin-where-my-id-wrapper">
+      <div class="poptin-where-my-id-01"> <img class="where-my-id-3-images"
+                     src="<?php echo $block->getViewFileUrl( $moduleName.'::images/where-is-my-id-01.png'); ?>"/>
+        <div class="poptin-where-my-id-smalltext"> <b>1.</b>&nbsp;Go to your dashboard, in the top bar click on "Settings" </div>
+      </div>
+      <div class="poptin-where-my-id-02"> <img class="where-my-id-3-images"
+                     src="<?php echo $block->getViewFileUrl( $moduleName.'::images/where-is-my-id-02.png'); ?>"/>
+        <div class="poptin-where-my-id-smalltext"> <b>2.</b>&nbsp;Click on Profile </div>
+      </div>
+      <div class="poptin-where-my-id-03"> <img class="where-my-id-3-images"
+                     src="<?php echo $block->getViewFileUrl( $moduleName.'::images/where-is-my-id-03.png'); ?>"/>
+        <div class="poptin-where-my-id-smalltext"> <b>3.</b>&nbsp;Copy your user ID </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="poptin-lightbox-button-wrapper text-align-right">
+      <div class="poptin-lightbox-button" onclick="closePoptinModal('whereIsMyId')">Close</div>
+    </div>
+  </div>
+</div>
+
+<!-- BYE BYE Modal -->
+<div id="byebyeModal" class="modal fade" role="dialog" style="margin-top: 110px;direction: ltr;">
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-byebye-image" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-bye-bye.png'); ?>"/>
+    <div class="poptin-lightbox-header-general">Bye Bye</div>
+    <div class="poptin-lightbox-textcontent-general"> Poptin snippet has been
+      removed. See you around. </div>
+    <div class="clearfix"></div>
+    <div class="poptin-lightbox-button-wrapper text-align-center">
+      <div class="poptin-lightbox-button" data-dismiss="modal">Close</div>
+    </div>
+  </div>
+</div>
+
+<!-- Just Making Sure Modal -->
+<div id="makingsure" class="poptin-modal-overlay fade"  style="direction: ltr;">
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-makingsure-image"
+             src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-making-sure.png'); ?>"/>
+    <div class="poptin-lightbox-header-general">Just making sure</div>
+    <div class="poptin-lightbox-textcontent-general"> Are you sure you want to<br/>
+      remove Poptin? </div>
+    <div class="clearfix"></div>
+    <div class="poptin-lightbox-button-wrapper text-align-center">
+      <div class="poptin-lightbox-button deactivate-poptin-confirm-yes">Yes</div>
+      <div class="poptin-lightbox-atag" onclick="closePoptinModal('makingsure');">I'll stay</div>
+    </div>
+  </div>
+</div>
+
+<!-- Just Making Sure Modal -->
+<div id="lookfamiliar" class="modal fade" role="dialog" style="margin-top: 110px;direction: ltr;">
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-familiar-image"
+             src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-familiar.png'); ?>"/>
+    <div class="poptin-lightbox-header-general">You look familiar</div>
+    <div class="poptin-lightbox-textcontent-general"> You already have a Poptin<br/>
+      account with this email address. </div>
+    <div class="clearfix"></div>
+    <div class="poptin-lightbox-button-wrapper text-align-center"> <a class="poptin-lightbox-button login-from-lb" target="_blank" href="https://app.popt.in/login">Login</a>
+      <div class="poptin-lightbox-atag" data-dismiss="modal">Cancel</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Email ID Modal -->
+<div id="oopsiewrongemailid"  class="poptin-modal-overlay fade" role="dialog" style="direction: ltr;">
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-oopsie-image" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-oopsie.png'); ?>"/>
+    <div class="poptin-lightbox-header-general">Oopsie... wrong Email</div>
+    <div class="poptin-lightbox-textcontent-general"> Please enter a valid Email Address. </div>
+    <div class="clearfix"></div>
+    <div class="poptin-lightbox-button-wrapper text-align-center">
+      <div class="poptin-lightbox-button" onclick="closePoptinModal('oopsiewrongemailid');">Try again</div>
+    </div>
+  </div>
+</div>
+
+<!-- Just Making Sure Modal -->
+<div id="oopsiewrongid"  class="poptin-modal-overlay fade" role="dialog" style="direction: ltr;">
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-oopsie-image" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-oopsie.png'); ?>"/>
+    <div class="poptin-lightbox-header-general">Oopsie... wrong ID</div>
+    <div class="poptin-lightbox-textcontent-general"> <a href="#" class="poptin-lightbox-atag where-is-my-id-inside-lb">Where is my user ID?</a> </div>
+    <div class="clearfix"></div>
+    <div class="poptin-lightbox-button-wrapper text-align-center">
+      <div class="poptin-lightbox-button" onclick="closePoptinModal('oopsiewrongid')">Try again</div>
+    </div>
+  </div>
+</div>
+<form action="https://app.popt.in/login" method="GET" class="dummy_form" id="dummy_form" target="_blank">
+</form>
+
+<!-- --> 
+
+<!-- Poptin chat btn-->
+<div class="poptin-help-btn"> <a class="poptin-help-tooltip" href="javascript:;"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/owner.png'); ?>" alt="Need help?"></a> <span class="tooltiptext">Need help?</span> </div>
+<div class="poptin-help-form">
+  <form action="#" method="post" id="poptin-help-form">
+    <input type="hidden" name="form_key" id="poptin_chat_key" value="<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>" />
+    <input type="hidden" name="web_address" id="poptin_web_address" value="<?php echo $block->getBaseUrl();?>" />
+    <div class="poptin-help-header"> <b><?php echo __("Gal Dubinski"); ?></b> <?php echo __("Co-Founder at Poptin"); ?> </div>
+    <div class="poptin-help-content">
+      <p><?php echo __("Hello! Do you need any help with setting up Poptin? Please let me know  🙂"); ?></p>
+      <div id="poptin_err_msg"></div>
+      <div id="poptin_success_msg"></div>
+      <div class="poptin-form-field">
+        <input type="text" name="user_email" id="user_email" placeholder="Email">
+      </div>
+      <div class="poptin-form-field">
+        <textarea type="text" name="textarea_text" id="textarea_text" placeholder="How can I help you?"></textarea>
+      </div>
+      <div class="poptin-form-button">
+        <button type="submit" class="poptin-help-button"> <?php echo __("Chat"); ?></button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Modal -->
+<div id="advanceSetting"  role="dialog" style="direction: ltr;" data-cur="<?php echo $poptinEtypeId;?>" class="poptin-modal-overlay fade">
+  <div class="modal-dialog poptin-lightbox">
+    <div class="close_lbox"><a href="javascript:void(0);" onclick="closePoptinModal('advanceSetting')"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/close-icon.png'); ?>"/></a></div>
+    <div class="poptin-lightbox-header"><?php echo __("Choose when do you want the Poptin JavaScript to load"); ?> </div>
+    <div class="poptin-advance-setting-wrapper">
+      <form action="<?php echo $this->getUrl('poptin/actions/saveembedtype'); ?>" method="post" id="poptin-ads-form">
+        <input type="hidden" name="form_key" value="<?php /* @escapeNotVerified */ echo $this->getFormKey() ?>" />
+        <div class="clearfix"></div>
+        <div class="poptin-form-group">
+          <div class="poptin-form-elem elem-inline">
+            <label class="custom-radio-item">
+              <input type="radio" value="1" <?php echo $poptinEtypeId==1?'checked=""':'';?> title="Please Select Your Board" class="custom-radio selcToggle active" name="adv_setting_code" data-code="<?php echo $poptin_etype_arr[1];?>">
+              <span class="custom-radio-mark elem-shadow no-border style-dot"></span> <?php echo __("Asynchronous"); ?> </label>
+            <label class="custom-radio-item">
+              <input type="radio" value="2" <?php echo $poptinEtypeId==2?'checked=""':'';?> class="custom-radio selcToggle active" name="adv_setting_code"  
+            data-code="<?php echo $poptin_etype_arr[2];?>">
+              <span class="custom-radio-mark  elem-shadow no-border style-dot"></span> <span class="arr"></span> <?php echo __("After Page Load"); ?> </label>
+            <label class="custom-radio-item">
+              <input type="radio" value="3" <?php echo $poptinEtypeId==3?'checked=""':'';?> class="custom-radio selcToggle" name="adv_setting_code"  
+            data-code="<?php echo $poptin_etype_arr[3];?>">
+              <span class="custom-radio-mark  elem-shadow no-border style-dot"></span> <span class="arr"></span> <?php echo __("Disable Poptin's JQuery"); ?> </label>
+          </div>
+        </div>
+        <div class="poptin-eheading">
+          <h3><?php echo __("This code will be installed on your website:"); ?> </h3>
+        </div>
+        <div class="poptin-code-block"> <code>
+          <textarea name="code-viewer" id="poptin-pixelcode" readonly="readonly"><?php echo $poptin_etype_arr[$poptinEtypeId];?>
+									</textarea>
+          </code> </div>
+        <div class="poptin-save-block">
+          <button name="save_ads" class="button_ads_save" type="submit"><?php echo __("Save"); ?></button>
+        </div>
+      </form>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

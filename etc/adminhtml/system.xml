@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<tab id="system" sortOrder="999" translate="label">
+			<label>system</label>
+		</tab>
+		<section id="poptin_settings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+			<label>poptin_settings</label>
+			<tab>system</tab>
+			<resource>Poptin_Magento2::config_poptin_magento2</resource>
+			<group id="poptin" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+				<label>poptin</label>
+				<field id="poptin_user_id" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+					<label>poptin_user_id</label>
+					<comment/>
+				</field>
+				<field id="poptin_client_id" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+					<label>poptin_client_id</label>
+					<comment/>
+				</field>
+				<field id="poptin_etype" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+					<label>poptin_etype</label>
+					<comment/>
+				</field>				
+				<field id="token" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+					<label>poptin_token</label>
+					<comment/>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

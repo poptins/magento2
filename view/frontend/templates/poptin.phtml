@@ -1,0 +1,15 @@
+<?php 
+if (!empty($block->getConfig('poptin_settings/poptin/poptin_client_id'))) :
+$client_id=$block->getConfig('poptin_settings/poptin/poptin_client_id');
+$embedType=$block->getConfig('poptin_settings/poptin/poptin_etype');
+$poptin_etype_arr=array(
+"1"=>"<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$client_id."' async='true'></script>\n",
+"2"=>"<script>var poptinAfterPageLoad = true;</script>
+<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$client_id."' async='true'></script>\n",
+"3"=>"<script>var poptinAfterPageLoad = 'noConflict';</script>
+<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$client_id."' async='true'></script>\n");
+?>
+<?php echo $poptin_etype_arr[$embedType]; ?>
+<?php endif; ?>
+
+
