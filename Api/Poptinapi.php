@@ -8,8 +8,8 @@ use Psr\Log\LoggerInterface;
 class Poptinapi
 {
 
-    const POPTIN_REGISTER_API_URL = 'https://app.popt.in/api/marketplace/register';
-    const POPTIN_AUTH_API_URL = 'https://app.popt.in/api/marketplace/auth';
+    private const POPTIN_REGISTER_API_URL = 'https://app.popt.in/api/marketplace/register';
+    private const POPTIN_AUTH_API_URL = 'https://app.popt.in/api/marketplace/auth';
 
     /**
      * @var \Magento\Framework\HTTP\Adapter\CurlFactory
@@ -55,13 +55,19 @@ class Poptinapi
                 'marketplace' => 'Mgnto2']
             );
 
-            $client->write(\Zend_Http_Client::POST, $url, '1.1', $headers, $body);
+            // $client->write(\Zend_Http_Client::POST, $url, '1.1', $headers, $body);
+            $client->write(\Laminas\Http\Request::METHOD_POST, $url, '1.1', $headers, $body);
+
             $response = $client->read();
             $client->close();
 
             // Parse response
-            $responseBody = \Zend_Http_Response::extractBody($response);
-            $responseCode = \Zend_Http_Response::extractCode($response);
+            // $responseBody = \Zend_Http_Response::extractBody($response);
+            $responseBody = \Laminas\Http\Response::extractBody($response);
+
+            // $responseCode = \Zend_Http_Response::extractCode($response);
+            $responseCode = \Laminas\Http\Response::extractCode($response);
+
 
             $apiResult = $this->jsonHelperUnserialize($responseBody);
             return $apiResult;
@@ -83,13 +89,19 @@ class Poptinapi
                 "Content-Type: application/x-www-form-urlencoded"];
             $body = http_build_query(['token' => $token, 'user_id' => $user_id]);
 
-            $client->write(\Zend_Http_Client::POST, $url, '1.1', $headers, $body);
+            // $client->write(\Zend_Http_Client::POST, $url, '1.1', $headers, $body);
+            $client->write(\Laminas\Http\Request::METHOD_POST, $url, '1.1', $headers, $body);
             $response = $client->read();
             $client->close();
 
             // Parse response
-            $responseBody = \Zend_Http_Response::extractBody($response);
-            $responseCode = \Zend_Http_Response::extractCode($response);
+            // $responseBody = \Zend_Http_Response::extractBody($response);
+            $responseBody = \Laminas\Http\Response::extractBody($response);
+
+            // $responseCode = \Zend_Http_Response::extractCode($response);
+            $responseCode = \Laminas\Http\Response::extractCode($response);
+
+
 
             $apiResult = $this->jsonHelperUnserialize($responseBody);
             return $apiResult;
