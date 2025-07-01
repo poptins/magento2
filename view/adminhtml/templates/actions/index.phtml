@@ -1,31 +1,32 @@
-<?php 
+<?php
 
 $moduleName = 'Poptin_Magento2';
 
 $poptinidcheck = false;
-if (!empty($block->getPoptinClientId()))
-{
+if (!empty($block->getPoptinClientId())) {
     $poptinidcheck = true;
 }
-$writeReviewUrl = "https://marketplace.magento.com/poptin-magento2.html"; //!!
-$poptinClienId=$block->getPoptinClientId();
-$poptinUserid=$poptinClienId!=""?$poptinClienId:"USERIDHERE";
-if (!empty($block->getPoptinEmbedType()))
-{
-$poptinEtypeId = $block->getPoptinEmbedType();
-}
-else
-{
-$poptinEtypeId="2";
-}
-$poptin_etype_arr=array(
-"1"=>"<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$poptinUserid."' async='true'></script>",
-"2"=>"<script>var poptinAfterPageLoad = true;</script><script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$poptinUserid."' async='true'></script>",
-"3"=>"<script>var poptinAfterPageLoad = 'noConflict';</script><script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=".$poptinUserid."' async='true'></script>");
+
+$writeReviewUrl = "https://marketplace.magento.com/poptin-magento2.html";
+
+$poptinClientId = $block->getPoptinClientId();
+$poptinUserid = !empty($poptinClientId) ? $poptinClientId : "USERIDHERE";
+
+// Sanitize user ID for JS (escape quotes to avoid script injection)
+$escapedPoptinUserid = $block->escapeJsQuote($poptinUserid);
+
+$poptinEtypeId = !empty($block->getPoptinEmbedType()) ? $block->getPoptinEmbedType() : "2";
+
+$poptin_etype_arr = [
+    "1" => "<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id={$escapedPoptinUserid}' async='true'></script>",
+    "2" => "<script>var poptinAfterPageLoad = true;</script><script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id={$escapedPoptinUserid}' async='true'></script>",
+    "3" => "<script>var poptinAfterPageLoad = 'noConflict';</script><script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id={$escapedPoptinUserid}' async='true'></script>"
+];
 
 ?>
-<link rel="stylesheet" id="bootstrap-modal-css-css" href="<?php echo $block->getViewFileUrl($moduleName.'::css/bootstrap.min.css'); ?>" type="text/css" media="all">
-<link rel="stylesheet" id="poptin-admin-css" href="<?php echo $block->getViewFileUrl($moduleName.'::css/poptin-admin.css'); ?>" type="text/css" media="all">
+
+<link rel="stylesheet" id="bootstrap-modal-css-css" href="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::css/bootstrap.min.css')) ?>" type="text/css" media="all">
+<link rel="stylesheet" id="poptin-admin-css" href="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::css/poptin-admin.css')) ?>" type="text/css" media="all">
 <style>
 .poptin-help-btn {
 	position: fixed;
@@ -396,13 +397,13 @@ button.button_ads_save:hover {
            { "*":
              {
                "poptin": {
-                 "parrotGifUrl": "<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot.gif'); ?>",
-                 "parrotPngUrl": "<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot.png'); ?>",
+                 "parrotGifUrl": "<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot.gif')) ?>",
+                 "parrotPngUrl": "<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot.png')) ?>",
                  "poptinRegisterApiUrl": "https://app.popt.in/api/marketplace/register",
                  "poptinAuthApiUrl": "https://app.popt.in/api/marketplace/auth",
-                 "poptinDeactivatePluginUrl" : "<?php echo $block->getPoptinDeactivatePluginUrl(); ?>",
-                 "poptinRedirectToLoginUrl" : "<?php echo $block->getPoptinRedirectToLoginUrl(); ?>",
-				 "poptinAjaxUrl" : "<?php echo $block->getUrl('poptin/actions/sendmail'); ?>"
+                 "poptinDeactivatePluginUrl" : "<?= $block->escapeUrl($block->getPoptinDeactivatePluginUrl()) ?>",
+                 "poptinRedirectToLoginUrl" : "<?= $block->escapeUrl($block->getPoptinRedirectToLoginUrl()) ?>",
+				 "poptinAjaxUrl" : "<?= $block->escapeUrl($block->getUrl('poptin/actions/sendmail')) ?>"
                }
              }
            }
@@ -410,62 +411,61 @@ button.button_ads_save:hover {
 <div class="poptin-overlay"></div>
 <div class="wrap poptinWrap"> 
   <!-- Logo -->
-  <div class="poptinLogo"><img src="<?php echo $block->getViewFileUrl($moduleName.'::images/purple-text-logo.svg'); ?>"/></div>
-  <div class="poptinLogged" style="<?php echo($poptinidcheck ? 'display:block' : 'display:none') ?>"> 
+  <div class="poptinLogo"><img src="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/purple-text-logo.svg')) ?>"/></div>
+  <div class="poptinLogged" style="<?= $block->escapeHtml($poptinidcheck ? 'display:block' : 'display:none') ?>"> 
     <!-- Here will render after login/create account view -->
     <div class="poptinLoggedBg"
-             style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/loggedinbg.png'); ?>) no-repeat">
+             style="background:url(<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/loggedinbg.png')) ?>) no-repeat">
       <form id="logmein_form" action="poptin/actions/createaccount" method="POST">
         <input type="hidden" name="action" value="poptin_logmein" class="poptin_input"/>
         <input type="hidden" name="logmein" value="true" class="poptin_input"/>
         <input type="hidden" name="security" class="poptin_input"
-                       value="<?php //!! echo wp_create_nonce("poptin-fe-login"); ?>"/>
+                       value=""/>
       </form>
-      <h2 class="loggedintitle"><?php echo  __("You're all set!"); ?></h2>
+      <h2 class="loggedintitle"><?= $block->escapeHtml(__("You're all set!")) ?></h2>
       <div class="tinyborder"></div>
-      <span class="everythinglooks"><?php echo __("Click on the button below<br>to manage your poptins"); ?></span> <img src="<?php echo $block->getViewFileUrl($moduleName.'::images/vicon.png'); ?>"/> <a href="<?php echo $block->getPoptinRedirectToLoginUrl(); ?>" target="_blank"
-               class="ppcontrolpanel goto_dashboard_button_pp_updatable"><?php echo __("Go to Dashboard"); ?></a> <a href="#logout" class="pplogout">
-      <?php  echo __("Deactivate Poptin"); ?>
+      <span class="everythinglooks"><?= $block->escapeHtml(__("Click on the button below<br>to manage your poptins")) ?></span> <img src="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/vicon.png')) ?>"/> <a href="<?= $block->escapeUrl($block->getPoptinRedirectToLoginUrl()) ?>" target="_blank"
+               class="ppcontrolpanel goto_dashboard_button_pp_updatable"><?= $block->escapeHtml(__("Go to Dashboard")) ?></a> <a href="#logout" class="pplogout">
+      <?= $block->escapeHtml(__("Deactivate Poptin")) ?>
       </a> </div>
     <div class="clearfix"></div>
     <!-- -->
-    <div class="poptin-adv-setting"> <a href="#" onclick="openPoptinModal('advanceSetting')" class="adv-setting-button"><?php echo __("Advanced Settings"); ?></a> </div>
+    <div class="poptin-adv-setting"> <a href="#" onclick="openPoptinModal('advanceSetting')" class="adv-setting-button"><?= $block->escapeHtml(__("Advanced Settings")) ?></a> </div>
     <div class="poptinContent review">
-      <h2 class="poptinTitle"><?php echo __("Let us know what you think 🙂"); ?></h2>
+      <h2 class="poptinTitle"><?= $block->escapeHtml(__("Let us know what you think 🙂")) ?></h2>
       <div class="tinyborder"></div>
       <div class="reviewbox"
-                 style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/reviewframe.png'); ?>) no-repeat">
-        <div class="reviewtitle"> <?php echo __("If Poptin already helped you to grow your business, please click on the button below and leave a positive review"); ?>
-          <?php /*<img draggable="false" class="emoji" alt="🙂" src="https://s.w.org/images/core/emoji/2.4/svg/1f642.svg">*/ ?>
+                 style="background:url(<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/reviewframe.png')) ?>) no-repeat">
+        <div class="reviewtitle"> <?= $block->escapeHtml(__("If Poptin already helped you to grow your business, please click on the button below and leave a positive review")) ?>
           🙂 </div>
-        <div class="reviewstars"> <img src="<?php echo $block->getViewFileUrl($moduleName.'::images/stars.png'); ?>"/> </div>
-        <div class="reviewlink"> <a href="<?php echo $writeReviewUrl; ?>"
-                       target="_blank"><?php echo __("Write a Review"); ?></a> </div>
+        <div class="reviewstars"> <img src="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/stars.png')) ?>"/> </div>
+        <div class="reviewlink"> <a href="<?= $block->escapeHtml($writeReviewUrl) ?>"
+                       target="_blank"><?= $block->escapeHtml(__("Write a Review")) ?></a> </div>
       </div>
     </div>
   </div>
-  <div class="ppaccountmanager" style="<?php echo($poptinidcheck ? 'display:none' : 'display:block') ?>">
+  <div class="ppaccountmanager" style="<?= $block->escapeHtml($poptinidcheck ? 'display:none' : 'display:block') ?>">
     <div class="popotinRegister"> 
       <!-- Here will render register view -->
       <div class="accountWrapper"
-                 style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/accountboxsignup.png'); ?>) no-repeat">
+                 style="background:url(<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/accountboxsignup.png')) ?>) no-repeat">
         <div class="poptinWrapInner">
-          <div class="topAccountBar sign_up_for_free_wrapper"> <span class="ppRegister active"><?php echo __("Sign up for free"); ?></span> <span class="ppSeparator"></span> <a href="#" class="ppLogin"><?php echo __("Already have account?"); ?></a>
+          <div class="topAccountBar sign_up_for_free_wrapper"> <span class="ppRegister active"><?= $block->escapeHtml(__("Sign up for free")) ?></span> <span class="ppSeparator"></span> <a href="#" class="ppLogin"><?= $block->escapeHtml(__("Already have account?")) ?></a>
             <div class="clearfix"></div>
           </div>
-          <form id="registration_form" class="ppFormRegister ppForm" action="<?php echo $block->getUrl('poptin/actions/createaccount'); ?>" target=""
+          <form id="registration_form" class="ppFormRegister ppForm" action="<?= $block->escapeUrl($block->getUrl('poptin/actions/createaccount')) ?>" target=""
                           method="POST">
-            <input type="hidden" name="form_key" value="<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>" />
+            <input type="hidden" name="form_key" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
             <input class="poptin_input" type="text" id="email" name="email" placeholder="Enter your email"
-                               value="<?php //echo $admin_email; ?>"
+                               value=""
                                placeholder="example@poptin.com"/>
             <input type="hidden" name="action" class="poptin_input" value="poptin_register"/>
             <input type="hidden" name="register" class="poptin_input" value="true"/>
             <input type="hidden" name="security" class="poptin_input"
-                               value="<?php //!! echo wp_create_nonce("poptin-fe-register"); ?>"/>
+                               value=""/>
             <div class="bottomForm">
               <input class="ppSubmit pp_signup_btn poptin_signup_button" type="submit"
-                                   value="<?php echo __("Sign Up"); ?>"/>
+                                   value="<?= $block->escapeHtml(__("Sign Up")) ?>"/>
             </div>
           </form>
         </div>
@@ -474,17 +474,17 @@ button.button_ads_save:hover {
     <div class="popotinLogin" style="display:none"> 
       <!-- Here will render login view -->
       <div class="accountWrapper"
-                 style="background:url(<?php echo $block->getViewFileUrl($moduleName.'::images/accountbox.png'); ?>) no-repeat">
+                 style="background:url(<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/accountbox.png')) ?>) no-repeat">
         <div class="poptinWrapInner">
-          <div class="topAccountBar poptin_login_wrapper"> <span class="ppLogin active"><?php echo __("Enter your user ID"); ?></span><span
+          <div class="topAccountBar poptin_login_wrapper"> <span class="ppLogin active"><?= $block->escapeHtml(__("Enter your user ID")) ?></span><span
                                 class="ppSeparator"></span><a href="#"
-                                                              class="ppRegister"><?php echo __("Sign up for free"); ?></a> </div>
-          <form id="map_poptin_id_form" class="ppFormLogin ppForm" action="<?php echo $block->getUrl('poptin/actions/saveuserid'); ?>" method="post">
-            <input type="hidden" name="form_key" value="<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>" />
+                                                              class="ppRegister"><?= $block->escapeHtml(__("Sign up for free")) ?></a> </div>
+          <form id="map_poptin_id_form" class="ppFormLogin ppForm" action="<?= $block->escapeUrl($block->getUrl('poptin/actions/saveuserid')) ?>" method="post">
+            <input type="hidden" name="form_key" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
             <input type="text" name="poptin_user_id" value="" placeholder="Enter your User ID" class="poptin_input"/>
             <div class="bottomForm remove_top_margin"> <a href="javascript:void(0);"  onclick="openPoptinModal('whereIsMyId')";
-                               class="wheremyid"><?php echo __("Where is my user ID?"); ?></a>
-              <input class="ppSubmit poptin_submit_button" type="submit" value="<?php echo __("Connect"); ?>"/>
+                               class="wheremyid"><?= $block->escapeHtml(__("Where is my user ID?")) ?></a>
+              <input class="ppSubmit poptin_submit_button" type="submit" value="<?= $block->escapeHtml(__("Connect")) ?>"/>
             </div>
           </form>
         </div>
@@ -492,10 +492,10 @@ button.button_ads_save:hover {
     </div>
     <div class="clearfix"></div>
     <div class="poptinContent">
-      <h2 class="poptinTitle"><?php echo __("Create your first poptin with ease"); ?></h2>
+      <h2 class="poptinTitle"><?= $block->escapeHtml(__("Create your first poptin with ease")) ?></h2>
       <div class="tinyborder"></div>
       <div class="youtubeVideoContainer"
-                 style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/youtubeBackground.png'); ?>) no-repeat">
+                 style="background:url(<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/youtubeBackground.png')) ?>) no-repeat">
         <div class="youtubeVideo">
           <iframe width="905" height="509"
                             src="https://www.youtube.com/embed/R_B8L3abt7Q?rel=0&amp;showinfo=0" frameborder="0"
@@ -505,66 +505,65 @@ button.button_ads_save:hover {
     </div>
     <div class="clearfix"></div>
     <div class="poptinContent whyChoose">
-      <h2 class="poptinTitle"><?php echo __("Here’s What Poptin Can Do For You"); ?></h2>
+      <h2 class="poptinTitle"><?= $block->escapeHtml(__("Here’s What Poptin Can Do For You")) ?></h2>
       <div class="tinyborder"></div>
       <div class="innerContent">
         <div class="box boxEnv">
-          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/envelope.png'); ?>"/></div>
-          <div class="boxTitle"><?php echo __("Get more email subscribers"); ?></div>
+          <div class="boxIcon"><img src="<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/envelope.png')) ?>"/></div>
+          <div class="boxTitle"><?= $block->escapeHtml(__("Get more email subscribers")) ?></div>
         </div>
         <div class="box boxLeads">
-          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/fanel.png'); ?>"/></div>
-          <div class="boxTitle"><?php echo __("Get more leads and sales"); ?></div>
+          <div class="boxIcon"><img src="<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/fanel.png')) ?>"/></div>
+          <div class="boxTitle"><?= $block->escapeHtml(__("Get more leads and sales")) ?></div>
         </div>
         <div class="box boxCart">
-          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/wheel.png'); ?>"/></div>
-          <div class="boxTitle"><?php echo __("Reduce shopping cart abandonedment"); ?></div>
+          <div class="boxIcon"><img src="<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/wheel.png')) ?>"/></div>
+          <div class="boxTitle"><?= $block->escapeHtml(__("Reduce shopping cart abandonedment")) ?></div>
         </div>
         <div class="box boxHeart">
-          <div class="boxIcon"><img src="<?php echo $block->getViewFileUrl($moduleName.'::images/heart.png'); ?>"/></div>
-          <div class="boxTitle"><?php echo __("Increare visitors' engagement"); ?></div>
+          <div class="boxIcon"><img src="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/heart.png')) ?>"/></div>
+          <div class="boxTitle"><?= $block->escapeHtml(__("Increare visitors' engagement")) ?></div>
         </div>
       </div>
     </div>
     <div class="clearfix"></div>
     <div class="poptinContent clients">
-      <h2 class="poptinTitle"><?php echo __("Digital Marketers ♥ Poptin"); ?></h2>
+      <h2 class="poptinTitle"><?= $block->escapeHtml(__("Digital Marketers ♥ Poptin")) ?></h2>
       <div class="tinyborder"></div>
       <div class="innerContent">
         <div class="boxclient client1">
           <div class="boxclientHead"
-                         style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/client1bg.png'); ?>) no-repeat"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/profile1.png'); ?>"/> </div>
-          <div class="clientboxtext"> <span class="clientName"><?php echo __("Michael Kamleitner"); ?></span> <span class="clientCompany"><?php echo __("CEO, Walls.io"); ?></span> <?php echo __("Getting started with poptin was a breeze – we've implemented the widget and connected it to our newsletter within minutes. Our conversion rate skyrocketed!"); ?> </div>
+                         style="background:url(<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/client1bg.png')) ?>) no-repeat"> <img src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/profile1.png')) ?>"/> </div>
+          <div class="clientboxtext"> <span class="clientName"><?= $block->escapeHtml(__("Michael Kamleitner")) ?></span> <span class="clientCompany"><?= $block->escapeHtml(__("CEO, Walls.io")) ?></span> <?= $block->escapeHtml(__("Getting started with poptin was a breeze – we've implemented the widget and connected it to our newsletter within minutes. Our conversion rate skyrocketed!")) ?> </div>
         </div>
         <div class="boxclient client2">
           <div class="boxclientHead"
-                         style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/client2bg.png'); ?>) no-repeat"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/profile2.png'); ?>"/> </div>
-          <div class="clientboxtext"> <span class="clientName"><?php echo __("Deepak Shukla"); ?></span> <span class="clientCompany"><?php echo __("CEO, Purr Traffic"); ?></span> <?php echo __("Been v.impressed with Poptin and the team behind it so far. Great responses times from support. The roadmap looks great. I highly recommend."); ?> </div>
+                         style="background:url(<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/client2bg.png')) ?>) no-repeat"> <img src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/profile2.png')) ?>"/> </div>
+          <div class="clientboxtext"> <span class="clientName"><?= $block->escapeHtml(__("Deepak Shukla")) ?></span> <span class="clientCompany"><?= $block->escapeHtml(__("CEO, Purr Traffic")) ?></span> <?= $block->escapeHtml(__("Been v.impressed with Poptin and the team behind it so far. Great responses times from support. The roadmap looks great. I highly recommend.")) ?> </div>
         </div>
         <div class="boxclient client3">
           <div class="boxclientHead"
-                         style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/client3bg.png'); ?>) no-repeat"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/profile3.png'); ?>"/> </div>
-          <div class="clientboxtext"> <span class="clientName"><?php echo __("Michael Voiskoun"); ?></span> <span class="clientCompany"><?php echo __("Marketing manager, Engie"); ?></span> <?php echo __("It's super easy to use, doesn't require any prior coding skill. The team at Poptin is really helpful, providing great support, and adding always more features!"); ?> </div>
+                         style="background:url(<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/client3bg.png')) ?>) no-repeat"> <img src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/profile3.png')) ?>"/> </div>
+          <div class="clientboxtext"> <span class="clientName"><?= $block->escapeHtml(__("Michael Voiskoun")) ?></span> <span class="clientCompany"><?= $block->escapeHtml(__("Marketing manager, Engie")) ?></span> <?= $block->escapeHtml(__("It's super easy to use, doesn't require any prior coding skill. The team at Poptin is really helpful, providing great support, and adding always more features!")) ?> </div>
         </div>
       </div>
     </div>
     <div class="clearfix"></div>
     <div class="poptinContent review">
-      <h2 class="poptinTitle"><?php echo __("Let us know what you think 🙂"); ?></h2>
+      <h2 class="poptinTitle"><?= $block->escapeHtml(__("Let us know what you think 🙂")) ?></h2>
       <div class="tinyborder"></div>
       <div class="reviewbox"
-                 style="background:url(<?php echo $block->getViewFileUrl( $moduleName.'::images/reviewframe.png'); ?>) no-repeat">
-        <div class="reviewtitle"> <?php echo __("If Poptin already helped you to grow your business, please click on the button below and leave a positive review"); ?>
-          <?php /*<img draggable="false" class="emoji" alt="🙂" src="https://s.w.org/images/core/emoji/2.4/svg/1f642.svg">*/ ?>
+                 style="background:url(<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/reviewframe.png')) ?>) no-repeat">
+        <div class="reviewtitle"> <?= $block->escapeHtml(__("If Poptin already helped you to grow your business, please click on the button below and leave a positive review")) ?>
           🙂 </div>
-        <div class="reviewstars"> <img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/stars.png'); ?>"/> </div>
-        <div class="reviewlink"> <a href="<?php echo $writeReviewUrl; ?>"
-                       target="_blank"><?php echo __("Write a Review"); ?></a> </div>
+        <div class="reviewstars"> <img src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/stars.png')) ?>"/> </div>
+        <div class="reviewlink"> <a href="<?= $block->escapeUrl($writeReviewUrl) ?>"
+                       target="_blank"><?= $block->escapeHtml(__("Write a Review")) ?></a> </div>
       </div>
     </div>
   </div>
   <div class="clearfix"></div>
-  <div class="poptinContent footer"> <img class="parrot" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot.png'); ?>"/> <span class="poptinlove"><?php echo __("Visit us at "); ?> <a
+  <div class="poptinContent footer"> <img class="parrot" src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot.png')) ?>"/> <span class="poptinlove"><?= $block->escapeHtml(__("Visit us at ")) ?> <a
                     href="https://www.poptin.com/?utm_source=magento2"
                     target="_blank">poptin.com</a></span> </div>
 </div>
@@ -575,15 +574,15 @@ button.button_ads_save:hover {
     <div class="poptin-lightbox-header">Where is my user ID?</div>
     <div class="poptin-where-my-id-wrapper">
       <div class="poptin-where-my-id-01"> <img class="where-my-id-3-images"
-                     src="<?php echo $block->getViewFileUrl( $moduleName.'::images/where-is-my-id-01.png'); ?>"/>
+                     src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/where-is-my-id-01.png')) ?>"/>
         <div class="poptin-where-my-id-smalltext"> <b>1.</b>&nbsp;Go to your dashboard, in the top bar click on "Settings" </div>
       </div>
       <div class="poptin-where-my-id-02"> <img class="where-my-id-3-images"
-                     src="<?php echo $block->getViewFileUrl( $moduleName.'::images/where-is-my-id-02.png'); ?>"/>
+                     src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/where-is-my-id-02.png')) ?>"/>
         <div class="poptin-where-my-id-smalltext"> <b>2.</b>&nbsp;Click on Profile </div>
       </div>
       <div class="poptin-where-my-id-03"> <img class="where-my-id-3-images"
-                     src="<?php echo $block->getViewFileUrl( $moduleName.'::images/where-is-my-id-03.png'); ?>"/>
+                     src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/where-is-my-id-03.png')) ?>"/>
         <div class="poptin-where-my-id-smalltext"> <b>3.</b>&nbsp;Copy your user ID </div>
       </div>
       <div class="clearfix"></div>
@@ -597,7 +596,7 @@ button.button_ads_save:hover {
 
 <!-- BYE BYE Modal -->
 <div id="byebyeModal" class="modal fade" role="dialog" style="margin-top: 110px;direction: ltr;">
-  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-byebye-image" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-bye-bye.png'); ?>"/>
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-byebye-image" src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot-bye-bye.png')) ?>"/>
     <div class="poptin-lightbox-header-general">Bye Bye</div>
     <div class="poptin-lightbox-textcontent-general"> Poptin snippet has been
       removed. See you around. </div>
@@ -611,7 +610,7 @@ button.button_ads_save:hover {
 <!-- Just Making Sure Modal -->
 <div id="makingsure" class="poptin-modal-overlay fade"  style="direction: ltr;">
   <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-makingsure-image"
-             src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-making-sure.png'); ?>"/>
+             src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot-making-sure.png')) ?>"/>
     <div class="poptin-lightbox-header-general">Just making sure</div>
     <div class="poptin-lightbox-textcontent-general"> Are you sure you want to<br/>
       remove Poptin? </div>
@@ -626,7 +625,7 @@ button.button_ads_save:hover {
 <!-- Just Making Sure Modal -->
 <div id="lookfamiliar" class="modal fade" role="dialog" style="margin-top: 110px;direction: ltr;">
   <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-familiar-image"
-             src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-familiar.png'); ?>"/>
+             src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot-familiar.png')) ?>"/>
     <div class="poptin-lightbox-header-general">You look familiar</div>
     <div class="poptin-lightbox-textcontent-general"> You already have a Poptin<br/>
       account with this email address. </div>
@@ -639,7 +638,7 @@ button.button_ads_save:hover {
 
 <!-- Wrong Email ID Modal -->
 <div id="oopsiewrongemailid"  class="poptin-modal-overlay fade" role="dialog" style="direction: ltr;">
-  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-oopsie-image" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-oopsie.png'); ?>"/>
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-oopsie-image" src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot-oopsie.png')) ?>"/>
     <div class="poptin-lightbox-header-general">Oopsie... wrong Email</div>
     <div class="poptin-lightbox-textcontent-general"> Please enter a valid Email Address. </div>
     <div class="clearfix"></div>
@@ -651,7 +650,7 @@ button.button_ads_save:hover {
 
 <!-- Just Making Sure Modal -->
 <div id="oopsiewrongid"  class="poptin-modal-overlay fade" role="dialog" style="direction: ltr;">
-  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-oopsie-image" src="<?php echo $block->getViewFileUrl( $moduleName.'::images/parrot-oopsie.png'); ?>"/>
+  <div class="modal-dialog poptin-lightbox-general"> <img class="poptin-parrot-oopsie-image" src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot-oopsie.png')) ?>"/>
     <div class="poptin-lightbox-header-general">Oopsie... wrong ID</div>
     <div class="poptin-lightbox-textcontent-general"> <a href="#" class="poptin-lightbox-atag where-is-my-id-inside-lb">Where is my user ID?</a> </div>
     <div class="clearfix"></div>
@@ -666,14 +665,14 @@ button.button_ads_save:hover {
 <!-- --> 
 
 <!-- Poptin chat btn-->
-<div class="poptin-help-btn"> <a class="poptin-help-tooltip" href="javascript:;"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/owner.png'); ?>" alt="Need help?"></a> <span class="tooltiptext">Need help?</span> </div>
+<div class="poptin-help-btn"> <a class="poptin-help-tooltip" href="javascript:;"><img src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/owner.png')) ?>" alt="Need help?"></a> <span class="tooltiptext">Need help?</span> </div>
 <div class="poptin-help-form">
   <form action="#" method="post" id="poptin-help-form">
-    <input type="hidden" name="form_key" id="poptin_chat_key" value="<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>" />
-    <input type="hidden" name="web_address" id="poptin_web_address" value="<?php echo $block->getBaseUrl();?>" />
-    <div class="poptin-help-header"> <b><?php echo __("Gal Dubinski"); ?></b> <?php echo __("Co-Founder at Poptin"); ?> </div>
+    <input type="hidden" name="form_key" id="poptin_chat_key" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
+    <input type="hidden" name="web_address" id="poptin_web_address" value="<?=  $block->escapeUrl($block->getBaseUrl()) ?>" />
+    <div class="poptin-help-header"> <b><?= $block->escapeHtml(__("Gal Dubinski")) ?></b> <?= $block->escapeHtml(__("Co-Founder at Poptin")) ?> </div>
     <div class="poptin-help-content">
-      <p><?php echo __("Hello! Do you need any help with setting up Poptin? Please let me know  🙂"); ?></p>
+      <p><?= $block->escapeHtml(__("Hello! Do you need any help with setting up Poptin? Please let me know  🙂")) ?></p>
       <div id="poptin_err_msg"></div>
       <div id="poptin_success_msg"></div>
       <div class="poptin-form-field">
@@ -683,45 +682,45 @@ button.button_ads_save:hover {
         <textarea type="text" name="textarea_text" id="textarea_text" placeholder="How can I help you?"></textarea>
       </div>
       <div class="poptin-form-button">
-        <button type="submit" class="poptin-help-button"> <?php echo __("Chat"); ?></button>
+        <button type="submit" class="poptin-help-button"> <?= $block->escapeHtml(__("Chat")) ?></button>
       </div>
     </div>
   </form>
 </div>
 
 <!-- Modal -->
-<div id="advanceSetting"  role="dialog" style="direction: ltr;" data-cur="<?php echo $poptinEtypeId;?>" class="poptin-modal-overlay fade">
+<div id="advanceSetting"  role="dialog" style="direction: ltr;" data-cur="<?= $block->escapeHtml($poptinEtypeId) ?>" class="poptin-modal-overlay fade">
   <div class="modal-dialog poptin-lightbox">
-    <div class="close_lbox"><a href="javascript:void(0);" onclick="closePoptinModal('advanceSetting')"><img src="<?php echo $block->getViewFileUrl( $moduleName.'::images/close-icon.png'); ?>"/></a></div>
-    <div class="poptin-lightbox-header"><?php echo __("Choose when do you want the Poptin JavaScript to load"); ?> </div>
+    <div class="close_lbox"><a href="javascript:void(0);" onclick="closePoptinModal('advanceSetting')"><img src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/close-icon.png')) ?>"/></a></div>
+    <div class="poptin-lightbox-header"><?= $block->escapeHtml(__("Choose when do you want the Poptin JavaScript to load")) ?> </div>
     <div class="poptin-advance-setting-wrapper">
-      <form action="<?php echo $this->getUrl('poptin/actions/saveembedtype'); ?>" method="post" id="poptin-ads-form">
-        <input type="hidden" name="form_key" value="<?php /* @escapeNotVerified */ echo $this->getFormKey() ?>" />
+      <form action="<?= $block->escapeUrl($this->getUrl('poptin/actions/saveembedtype')) ?>" method="post" id="poptin-ads-form">
+        <input type="hidden" name="form_key" value="<?= $block->escapeHtml($this->getFormKey()) ?>" />
         <div class="clearfix"></div>
         <div class="poptin-form-group">
           <div class="poptin-form-elem elem-inline">
             <label class="custom-radio-item">
-              <input type="radio" value="1" <?php echo $poptinEtypeId==1?'checked=""':'';?> title="Please Select Your Board" class="custom-radio selcToggle active" name="adv_setting_code" data-code="<?php echo $poptin_etype_arr[1];?>">
-              <span class="custom-radio-mark elem-shadow no-border style-dot"></span> <?php echo __("Asynchronous"); ?> </label>
+              <input type="radio" value="1" <?= $block->escapeHtml($poptinEtypeId == 1 ? 'checked=""' : '') ?> title="Please Select Your Board" class="custom-radio selcToggle active" name="adv_setting_code" data-code="<?= $block->escapeHtml($poptin_etype_arr[1]) ?>">
+              <span class="custom-radio-mark elem-shadow no-border style-dot"></span> <?= $block->escapeHtml(__("Asynchronous")) ?> </label>
             <label class="custom-radio-item">
-              <input type="radio" value="2" <?php echo $poptinEtypeId==2?'checked=""':'';?> class="custom-radio selcToggle active" name="adv_setting_code"  
-            data-code="<?php echo $poptin_etype_arr[2];?>">
-              <span class="custom-radio-mark  elem-shadow no-border style-dot"></span> <span class="arr"></span> <?php echo __("After Page Load"); ?> </label>
+              <input type="radio" value="2" <?= $block->escapeHtml($poptinEtypeId == 2 ? 'checked=""' : '') ?> class="custom-radio selcToggle active" name="adv_setting_code"  
+            data-code="<?= $block->escapeHtml($poptin_etype_arr[2]) ?>">
+              <span class="custom-radio-mark  elem-shadow no-border style-dot"></span> <span class="arr"></span> <?= $block->escapeHtml(__("After Page Load")) ?> </label>
             <label class="custom-radio-item">
-              <input type="radio" value="3" <?php echo $poptinEtypeId==3?'checked=""':'';?> class="custom-radio selcToggle" name="adv_setting_code"  
-            data-code="<?php echo $poptin_etype_arr[3];?>">
-              <span class="custom-radio-mark  elem-shadow no-border style-dot"></span> <span class="arr"></span> <?php echo __("Disable Poptin's JQuery"); ?> </label>
+              <input type="radio" value="3" <?= $block->escapeHtml($poptinEtypeId == 3 ? 'checked=""' : '') ?> class="custom-radio selcToggle" name="adv_setting_code"  
+            data-code="<?= $block->escapeHtml($poptin_etype_arr[3]) ?>">
+              <span class="custom-radio-mark  elem-shadow no-border style-dot"></span> <span class="arr"></span> <?= $block->escapeHtml(__("Disable Poptin's JQuery")) ?> </label>
           </div>
         </div>
         <div class="poptin-eheading">
-          <h3><?php echo __("This code will be installed on your website:"); ?> </h3>
+          <h3><?= $block->escapeHtml(__("This code will be installed on your website:")) ?> </h3>
         </div>
         <div class="poptin-code-block"> <code>
-          <textarea name="code-viewer" id="poptin-pixelcode" readonly="readonly"><?php echo $poptin_etype_arr[$poptinEtypeId];?>
+          <textarea name="code-viewer" id="poptin-pixelcode" readonly="readonly"><?= $block->escapeHtml($poptin_etype_arr[$poptinEtypeId]) ?>
 									</textarea>
           </code> </div>
         <div class="poptin-save-block">
-          <button name="save_ads" class="button_ads_save" type="submit"><?php echo __("Save"); ?></button>
+          <button name="save_ads" class="button_ads_save" type="submit"><?= $block->escapeHtml(__("Save")) ?></button>
         </div>
       </form>
     </div>
