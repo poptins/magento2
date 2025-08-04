@@ -63,13 +63,19 @@ class Poptinapi
 
             // Parse response
             // $responseBody = \Zend_Http_Response::extractBody($response);
-            $responseBody = \Laminas\Http\Response::extractBody($response);
+            //$responseBody = \Laminas\Http\Response::extractBody($response);
 
             // $responseCode = \Zend_Http_Response::extractCode($response);
-            $responseCode = \Laminas\Http\Response::extractCode($response);
+           // $responseCode = \Laminas\Http\Response::extractCode($response);
 
+            // Split headers and body
+            list($headers, $body) = explode("\r\n\r\n", $response, 2);
 
-            $apiResult = $this->jsonHelperUnserialize($responseBody);
+            // Extract status code (optional, if you want to log/validate)
+            preg_match('/HTTP\/\d\.\d\s+(\d+)/', $headers, $matches);
+            $responseCode = $matches[1] ?? 0; 
+           
+            $apiResult = $this->jsonHelperUnserialize($body);
             return $apiResult;
         } catch (\Exception $e) {
             $this->log->error($e->getMessage());
@@ -96,14 +102,19 @@ class Poptinapi
 
             // Parse response
             // $responseBody = \Zend_Http_Response::extractBody($response);
-            $responseBody = \Laminas\Http\Response::extractBody($response);
+            // $responseBody = \Laminas\Http\Response::extractBody($response);
 
             // $responseCode = \Zend_Http_Response::extractCode($response);
-            $responseCode = \Laminas\Http\Response::extractCode($response);
+            // $responseCode = \Laminas\Http\Response::extractCode($response);
 
+           // Split headers and body
+            list($headers, $body) = explode("\r\n\r\n", $response, 2);
 
+            // Extract status code (optional, if you want to log/validate)
+            preg_match('/HTTP\/\d\.\d\s+(\d+)/', $headers, $matches);
+            $responseCode = $matches[1] ?? 0;     
 
-            $apiResult = $this->jsonHelperUnserialize($responseBody);
+            $apiResult = $this->jsonHelperUnserialize($body);
             return $apiResult;
         } catch (\Exception $e) {
             $this->log->error($e->getMessage());

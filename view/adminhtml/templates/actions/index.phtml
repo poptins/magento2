@@ -24,7 +24,9 @@ $poptin_etype_arr = [
 ];
 
 ?>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" id="bootstrap-modal-css-css" href="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::css/bootstrap.min.css')) ?>" type="text/css" media="all">
 <link rel="stylesheet" id="poptin-admin-css" href="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::css/poptin-admin.css')) ?>" type="text/css" media="all">
 <style>
@@ -155,7 +157,8 @@ div#poptin_success_msg p {
 	padding: 10px;
 }
 a.adv-setting-button {
-	background-color: #000000;
+	background: linear-gradient(180deg, #414141 0%, #000000 100%);
+  box-shadow: 0px 3px 6px -4px rgba(119, 97, 223, 0.32), 0px 6px 16px rgba(119, 97, 223, 0.28), 0px 9px 28px 8px rgba(119, 97, 223, 0.18);
 	width: 240px;
 	height: 50px;
 	display: block;
@@ -434,8 +437,7 @@ button.button_ads_save:hover {
     <div class="poptinContent review">
       <h2 class="poptinTitle"><?= $block->escapeHtml(__("Let us know what you think 🙂")) ?></h2>
       <div class="tinyborder"></div>
-      <div class="reviewbox"
-                 style="background:url(<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/reviewframe.png')) ?>) no-repeat">
+      <div class="reviewbox">
         <div class="reviewtitle"> <?= $block->escapeHtml(__("If Poptin already helped you to grow your business, please click on the button below and leave a positive review")) ?>
           🙂 </div>
         <div class="reviewstars"> <img src="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/stars.png')) ?>"/> </div>
@@ -483,7 +485,7 @@ button.button_ads_save:hover {
             <input type="hidden" name="form_key" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
             <input type="text" name="poptin_user_id" value="" placeholder="Enter your User ID" class="poptin_input"/>
             <div class="bottomForm remove_top_margin"> <a href="javascript:void(0);"  onclick="openPoptinModal('whereIsMyId')";
-                               class="wheremyid"><?= $block->escapeHtml(__("Where is my user ID?")) ?></a>
+                               class="wheremyid"><?= $block->escapeHtml(__("Where Is My ID?")) ?></a>
               <input class="ppSubmit poptin_submit_button" type="submit" value="<?= $block->escapeHtml(__("Connect")) ?>"/>
             </div>
           </form>
@@ -498,7 +500,7 @@ button.button_ads_save:hover {
                  style="background:url(<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/youtubeBackground.png')) ?>) no-repeat">
         <div class="youtubeVideo">
           <iframe width="905" height="509"
-                            src="https://www.youtube.com/embed/R_B8L3abt7Q?rel=0&amp;showinfo=0" frameborder="0"
+                            src="https://www.youtube.com/embed/gZGz0tawfx8?rel=0&amp;showinfo=0" frameborder="0"
                             allowfullscreen></iframe>
         </div>
       </div>
@@ -552,8 +554,7 @@ button.button_ads_save:hover {
     <div class="poptinContent review">
       <h2 class="poptinTitle"><?= $block->escapeHtml(__("Let us know what you think 🙂")) ?></h2>
       <div class="tinyborder"></div>
-      <div class="reviewbox"
-                 style="background:url(<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/reviewframe.png')) ?>) no-repeat">
+      <div class="reviewbox">
         <div class="reviewtitle"> <?= $block->escapeHtml(__("If Poptin already helped you to grow your business, please click on the button below and leave a positive review")) ?>
           🙂 </div>
         <div class="reviewstars"> <img src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/stars.png')) ?>"/> </div>
@@ -571,24 +572,24 @@ button.button_ads_save:hover {
 <!-- Modal -->
 <div id="whereIsMyId" class="poptin-modal-overlay fade" role="dialog" style="direction: ltr;">
   <div class="modal-dialog poptin-lightbox">
-    <div class="poptin-lightbox-header">Where is my user ID?</div>
+    <div class="poptin-lightbox-header">Where Is My ID?</div>
     <div class="poptin-where-my-id-wrapper">
       <div class="poptin-where-my-id-01"> <img class="where-my-id-3-images"
                      src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/where-is-my-id-01.png')) ?>"/>
-        <div class="poptin-where-my-id-smalltext"> <b>1.</b>&nbsp;Go to your dashboard, in the top bar click on "Settings" </div>
+        <div class="poptin-where-my-id-smalltext"><span><b>1</b></span> Go to your dashboard and click on 'Installation Code' in the left menu. </div>
       </div>
       <div class="poptin-where-my-id-02"> <img class="where-my-id-3-images"
                      src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/where-is-my-id-02.png')) ?>"/>
-        <div class="poptin-where-my-id-smalltext"> <b>2.</b>&nbsp;Click on Profile </div>
+        <div class="poptin-where-my-id-smalltext"><span><b>2</b></span> Click on Magento </div>
       </div>
       <div class="poptin-where-my-id-03"> <img class="where-my-id-3-images"
                      src="<?=  $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/where-is-my-id-03.png')) ?>"/>
-        <div class="poptin-where-my-id-smalltext"> <b>3.</b>&nbsp;Copy your user ID </div>
+        <div class="poptin-where-my-id-smalltext"><span><b>3</b></span> Copy your user ID </div>
       </div>
       <div class="clearfix"></div>
     </div>
     <div class="clearfix"></div>
-    <div class="poptin-lightbox-button-wrapper text-align-right">
+    <div class="poptin-lightbox-button-wrapper text-align-center">
       <div class="poptin-lightbox-button" onclick="closePoptinModal('whereIsMyId')">Close</div>
     </div>
   </div>

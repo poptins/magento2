@@ -10,14 +10,14 @@ a:focus {
 }
 /* END Reset */
 .poptinWrap {
-	font-family: 'Open Sans', sans-serif;
-	width: 1078px;
-	margin: 51px auto 20px;
-	direction: ltr;
-	border: 1px solid #e4e4e4;
-	background: #FCFCFC;
-	padding-bottom: 81px;
-	box-shadow: -7px 5px 16px 0px rgba(4, 4, 4, 0.35);
+	font-family: "Poppins", sans-serif;
+    width: 1078px;
+    margin: 51px auto 20px;
+    direction: ltr;
+    background: #FCFCFC;
+    padding-bottom: 81px;
+    box-shadow: 0px 4px 35px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 .poptinLogo {
 	text-align: center;
@@ -60,7 +60,7 @@ a:focus {
 .popotinLogin .ppLogin.active {
 	color: #ffffff;
 	font-size: 30px; /* Approximation due to font substitution */
-	font-weight: 700;
+	font-weight: 600;
 	text-align: center;
 	text-decoration: none;
 	outline: 0;
@@ -77,13 +77,13 @@ a:focus {
 }
 .popotinRegister .ppRegister.active {
 	color: #ffffff;
-	font-size: 30px; /* Approximation due to font substitution */
-	font-weight: 700;
-	text-align: center;
-	text-decoration: none;
-	outline: 0;
-	margin-top: 0px;
-	line-height: 1;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    outline: 0;
+    margin-top: 0px;
+    line-height: 1;
 }
 .ppSeparator {
 	border-width: 1px;
@@ -96,7 +96,7 @@ a:focus {
 	vertical-align: top;
 }
 .ppForm input[type='text'] {
-	font-family: 'Open Sans', sans-serif;
+	font-family: "Poppins", sans-serif;
 	color: #acacac;
 	font-size: 18px; /* Approximation due to font substitution */
 	font-weight: 400;
@@ -117,7 +117,7 @@ input.ppSubmit.poptin_submit_button {
 .wheremyid {
 	vertical-align: middle;
 	line-height: 1 !important;
-	font-family: 'Open Sans', sans-serif;
+	font-family: "Poppins", sans-serif;
 	color: #ffffff;
 	font-size: 15px;
 	font-weight: 400;
@@ -137,27 +137,28 @@ input.ppSubmit.poptin_submit_button {
 	transition: all 200ms ease;
 }
 .ppSubmit {
-	display: block;
-	float: right;
-	text-decoration: none;
-	font-family: 'Open Sans', sans-serif;
-	color: #ffffff;
-	border-radius: 23px;
-	font-size: 25.25px;
-	font-weight: 400;
-	text-align: center;
-	background-color: #000000;
-	width: 171px;
-	height: 44px;
-	border: 0;
-	outline: 0;
-	vertical-align: middle;
-	cursor: pointer;
-	-webkit-transition: all 200ms ease;
-	-moz-transition: all 200ms ease;
-	-ms-transition: all 200ms ease;
-	-o-transition: all 200ms ease;
-	transition: all 200ms ease;
+    display: block;
+    float: right;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+    color: #ffffff;
+    border-radius: 23px;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    width: 171px;
+    height: 44px;
+    border: 0;
+    outline: 0;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-transition: all 200ms ease;
+    -moz-transition: all 200ms ease;
+    -ms-transition: all 200ms ease;
+    -o-transition: all 200ms ease;
+    transition: all 200ms ease;
+    background: linear-gradient(180deg, #414141 0%, #000000 100%);
+    box-shadow: 0px 3px 6px -4px rgba(119, 97, 223, 0.32), 0px 6px 16px rgba(119, 97, 223, 0.28), 0px 9px 28px 8px rgba(119, 97, 223, 0.18);
 }
 .bottomForm .ppSubmit:hover {
 	box-shadow: -7px 5px 16px 0px rgba(4, 4, 4, 0.35);
@@ -177,12 +178,15 @@ input.ppSubmit.poptin_submit_button {
 	padding-left: 12px;
 }
 .poptinTitle {
-	font-family: 'Open Sans', sans-serif !important;
+	font-family: "Poppins", sans-serif !important;
 	color: #242424 !important;
-	font-size: 37px !important;
+	font-size: 32px !important;
 	font-weight: 400 !important;
 	text-align: center !important;
 	margin: 22px !important;
+}
+.poptinTitle span{
+	color: #7761df !important;
 }
 .modal {
 	padding-left: 90px;
@@ -212,7 +216,7 @@ div#whereIsMyId {
 */
 
 .tinyborder {
-	background-color: #9c2362;
+	background-color: #7761df;
 	width: 54px;
 	height: 10px;
 	margin: 0 auto;
@@ -248,7 +252,7 @@ div#whereIsMyId {
 	margin-bottom: 55px;
 }
 .box {
-	border-radius: 7px;
+	border-radius: 8px;
 	width: 230px;
 	height: 230px;
 	display: inline-block;
@@ -259,24 +263,25 @@ div#whereIsMyId {
 	-ms-transition: all 200ms ease;
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
 }
 .box:hover {
 	box-shadow: -7px 5px 16px 0px rgba(4, 4, 4, 0.35);
 }
 .boxEnv {
-	background-color: #9c2362;
+	background-color: #ff6376;
 	margin-right: 20px;
 }
 .boxLeads {
-	background-color: #28919e;
+	background-color: #7761df;
 	margin-right: 20px;
 }
 .boxCart {
-	background-color: #eca916;
+	background-color: #51dbee;
 	margin-right: 20px;
 }
 .boxHeart {
-	background-color: #ef5451;
+	background-color: #ffc163;
 }
 .boxIcon {
 	padding-top: 43px;
@@ -294,9 +299,8 @@ div#whereIsMyId {
 	margin-top: 100px;
 }
 .boxclient {
-	border-radius: 7px;
+	border-radius: 8px;
 	background-color: #ffffff;
-	border: 1px solid #ebebeb;
 	width: 315px;
 	height: 462px;
 	display: inline-block;
@@ -306,10 +310,11 @@ div#whereIsMyId {
 	-ms-transition: all 200ms ease;
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
 }
 .boxclient:hover {
 	background-color: #ffffff;
-	box-shadow: -7px 5px 16px 0px rgba(4, 4, 4, 0.35);
+	box-shadow: -7px 5px 16px 0px rgb(119 97 223 / 21%);
 }
 .boxclient.client1 {
 	margin-right: 17px;
@@ -318,21 +323,21 @@ div#whereIsMyId {
 	margin-right: 17px;
 }
 .clientName {
-	display: block;
-	line-height: 23px;
-	color: #898989;
-	font-size: 18px; /* Approximation due to font substitution */
-	font-weight: 700;
-	text-align: center;
+    display: block;
+    line-height: 23px;
+    color: #362a6d;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
 }
 .clientCompany {
-	display: block;
-	margin-bottom: 29px;
-	color: #898989;
-	font-size: 16px; /* Approximation due to font substitution */
-	font-weight: 400;
-	text-align: center;
-	transform: scaleX(1.0622); /* width and height properties ommitted due to transform */
+    display: block;
+    margin: 8px 0px;
+    color: #362a6d;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    transform: scaleX(1.0622);
 }
 .poptinContent.clients .innerContent {
 	margin-top: 26px;
@@ -344,34 +349,41 @@ div#whereIsMyId {
 	padding-top: 50px;
 }
 .clientboxtext {
-	color: #898989;
-	line-height: 21px;
-	font-size: 18px; /* Approximation due to font substitution */
-	font-weight: 400;
-	text-align: center;
-	transform: scaleX(1.0622); /* width and height properties ommitted due to transform */
-	padding-left: 30px;
-	padding-right: 30px;
-	padding-top: 45px;
+    color: #362a6d;
+    line-height: 24px;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    transform: scaleX(1.0622);
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 45px;
 }
+
 .poptinContent.review {
 	margin-top: 55px;
 }
 .poptinContent.review .tinyborder {
 	margin: 0 auto 26px;
 }
+.poptinContent.review {
+    margin-top: 50px;
+}
 .reviewbox {
 	width: 1009px;
 	height: 349px;
 	margin: 0 auto;
 	padding-top: 35px;
+	background: rgba(119, 97, 223, 0.1);
+    border-radius: 12px;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
 }
 .reviewtitle {
-	color: #ffffff;
+	color: #362a6d;
 	font-size: 24px; /* Approximation due to font substitution */
 	font-weight: 400;
 	text-align: center;
-	line-height: 30px;
+	line-height: 36px;
 	padding: 0 55px;
 }
 .reviewstars {
@@ -380,23 +392,24 @@ div#whereIsMyId {
 	margin-bottom: 49px;
 }
 .reviewlink a {
-	background-color: #000000;
-	width: 385px;
-	height: 73px;
-	display: block;
-	margin: 0 auto;
-	line-height: 73px;
-	text-decoration: none;
-	border-radius: 50px;
-	color: #ffffff;
-	font-size: 44.44px;
-	font-weight: 400;
-	text-align: center;
-	-webkit-transition: all 200ms ease;
-	-moz-transition: all 200ms ease;
-	-ms-transition: all 200ms ease;
-	-o-transition: all 200ms ease;
-	transition: all 200ms ease;
+	width: 350px;
+    height: 54px;
+    display: block;
+    margin: 0 auto;
+    line-height: 54px;
+    text-decoration: none;
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+    -webkit-transition: all 200ms ease;
+    -moz-transition: all 200ms ease;
+    -ms-transition: all 200ms ease;
+    -o-transition: all 200ms ease;
+    transition: all 200ms ease;
+    background: linear-gradient(180deg, #7761DF 0%, #5335DD 100%);
+    box-shadow: 0px 3px 6px -4px rgba(119, 97, 223, 0.32), 0px 6px 16px rgba(119, 97, 223, 0.28), 0px 9px 28px 8px rgba(119, 97, 223, 0.18);
 }
 .reviewlink a:hover {
 	box-shadow: -7px 5px 16px 0px rgba(4, 4, 4, 0.35);
@@ -407,7 +420,7 @@ div#whereIsMyId {
 .poptinContent.footer span {
 	display: block;
 	color: #242424;
-	font-size: 24px; /* Approximation due to font substitution */
+	font-size: 18px; /* Approximation due to font substitution */
 	font-weight: 400;
 	line-height: 41.595px; /* Approximation due to font substitution */
 	text-align: center;
@@ -440,12 +453,12 @@ img.parrot {
 	padding-top: 20px;
 }
 .poptinLogged .tinyborder {
-	background-color: #252525;
+	background-color: #7761df;
 }
 h2.loggedintitle {
 	color: #242424;
 	font-size: 35px !important; /* Approximation due to font substitution */
-	font-weight: 700;
+	font-weight: 600;
 	text-align: center;
 	margin: 15px 0;
 }
@@ -464,18 +477,18 @@ span.everythinglooks {
 }
 a.ppcontrolpanel {
 	color: #ffffff;
-	font-size: 40px !important; /* Approximation due to font substitution */
-	font-weight: 400;
-	text-align: center;
-	display: block;
-	background-color: #000000;
-	box-shadow: -7px 5px 16px 0px rgba(4, 4, 4, 0.35);
-	width: 426px;
-	height: 62px;
-	margin: 0 auto;
-	line-height: 62px;
-	text-decoration: none;
-	border-radius: 50px;
+    font-size: 24px !important;
+    font-weight: 400;
+    text-align: center;
+    display: block;
+    width: 360px;
+    height: 54px;
+    margin: 0 auto;
+    line-height: 54px;
+    text-decoration: none;
+    border-radius: 50px;
+    background: linear-gradient(180deg, #414141 0%, #000000 100%);
+    box-shadow: 0px 3px 6px -4px rgba(119, 97, 223, 0.32), 0px 6px 16px rgba(119, 97, 223, 0.28), 0px 9px 28px 8px rgba(119, 97, 223, 0.18);
 }
 a.pplogout {
 	display: block;
@@ -549,34 +562,32 @@ a.pplogout:focus {
 	width: auto !important;
 }
 .poptin-lightbox-header {
-	font-family: 'Open Sans', sans-serif;
-	font-style: normal;
-	font-weight: bold;
-	line-height: normal;
-	font-size: 30px;
-	text-align: center;
-	color: #828282;
-	margin-bottom: 30px;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    font-size: 24px;
+    text-align: center;
+    color: #362a6d;
+    margin: 20px 0px;
 }
 .poptin-lightbox-button:focus {
 	color: #FFF !important;
 }
 .poptin-lightbox-button {
-	font-family: 'Open Sans', sans-serif;
-	font-style: normal;
-	font-weight: normal;
-	line-height: normal;
-	font-size: 16px;
-	text-align: center;
-	background: linear-gradient(180deg, #333333 0%, #4F4F4F 100%);
-	border-radius: 17px;
-	padding: 3px 25px 3px 25px;
-	clear: both;
-	color: #fff;
-	transition: all linear 0.3s;
-	display: inline-block;
-	cursor: pointer;
-	text-decoration: none;
+	font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    transition: all linear 0.3s;
+    width: 376px;
+    height: 48px;
+    background: linear-gradient(180deg, #7761DF 0%, #5335DD 100%);
+    box-shadow: 0px 3px 6px -4px rgba(119, 97, 223, 0.32), 0px 6px 16px rgba(119, 97, 223, 0.28), 0px 9px 28px 8px rgba(119, 97, 223, 0.18);
+    border-radius: 12px;
+    text-align: center;
+    line-height: 48px;
+    font-weight: 500;
+    color: #ffffff;
+	margin: 0 auto;
 }
 .poptin-lightbox-button:hover {
 	cursor: pointer;
@@ -589,16 +600,28 @@ a.pplogout:focus {
 	height: auto;
 	display: block;
 	padding: 10px;
-	border-radius: 30px;
 }
 .poptin-where-my-id-smalltext {
-	font-family: 'Open Sans', sans-serif;
-	font-style: normal;
-	line-height: normal;
-	font-size: 19px;
-	color: #828282;
-	width: 75%;
-	margin: auto auto;
+	font-family: "Poppins", sans-serif;
+    font-style: normal;
+    line-height: normal;
+    font-size: 16px;
+    color: #362a6d;
+    width: 80%;
+    display: flex;
+    gap: 10px;
+    margin-left: 10px;
+	margin-top: 10px;
+}
+.poptin-where-my-id-smalltext span b {
+    width: 32px;
+    height: 32px;
+    display: block;
+    text-align: center;
+    background: rgba(228, 223, 249, 0.6);
+    line-height: 33px;
+    border-radius: 32px;
+    color: #7761df;
 }
 .poptin-where-my-id-wrapper > div {
 	width: 33.33%;
@@ -611,13 +634,13 @@ a.pplogout:focus {
 	text-align: right;
 }
 .poptin-lightbox-header-general {
-	font-family: 'Open Sans', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-style: normal;
 	font-weight: bold;
 	line-height: normal;
 	font-size: 30px;
 	text-align: center;
-	color: #828282;
+	color: #362a6d;
 }
 .poptin-lightbox-general {
 	width: 520px !important;
@@ -629,12 +652,12 @@ a.pplogout:focus {
 }
 .poptin-lightbox-textcontent-general {
 	width: 250px;
-	font-family: 'Open Sans', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 16px;
 	text-align: center;
-	color: #828282;
+	color: #362a6d;
 	line-height: 1.6;
 	margin: auto auto;
 	margin-top: auto;
@@ -680,14 +703,14 @@ a.pplogout:focus {
 }
 .poptin-lightbox-atag {
 	margin-top: 7px !important;
-	font-family: 'Open Sans', sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	line-height: normal;
 	font-size: 14px;
 	text-align: center;
 	text-decoration: underline;
-	color: #828282;
+	color: #362a6d;
 	cursor: pointer;
 	clear: both;
 	max-width: 300px;
