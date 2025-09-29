@@ -11,5 +11,5 @@ if (!empty($block->getConfig('poptin_settings/poptin/poptin_client_id'))) :
                "<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=" . $block->escapeJsQuote($client_id) . "' async='true'></script>\n",
     ];
 ?>
-<?= $block->escapeHtml($poptin_etype_arr[$embedType] ?? '') ?>
+<?= $poptin_etype_arr[$embedType] ?? '' ?>
 <?php endif; ?>
