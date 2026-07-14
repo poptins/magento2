@@ -399,7 +399,7 @@ button.button_ads_save:hover {
 <script type="text/x-magento-init">
            { "*":
              {
-               "poptin": {
+               "Poptin_Magento2/js/poptin": {
                  "parrotGifUrl": "<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot.gif')) ?>",
                  "parrotPngUrl": "<?= $block->escapeUrl($block->getViewFileUrl( $moduleName.'::images/parrot.png')) ?>",
                  "poptinRegisterApiUrl": "https://app.popt.in/api/marketplace/register",
@@ -427,7 +427,7 @@ button.button_ads_save:hover {
       </form>
       <h2 class="loggedintitle"><?= $block->escapeHtml(__("You're all set!")) ?></h2>
       <div class="tinyborder"></div>
-      <span class="everythinglooks"><?= $block->escapeHtml(__("Click on the button below<br>to manage your poptins")) ?></span> <img src="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/vicon.png')) ?>"/> <a href="<?= $block->escapeUrl($block->getPoptinRedirectToLoginUrl()) ?>" target="_blank"
+      <span class="everythinglooks"><?= $block->escapeHtml(__('Click on the button below')) ?><br><?= $block->escapeHtml(__('to manage your poptins')) ?></span> <img src="<?= $block->escapeUrl($block->getViewFileUrl($moduleName.'::images/vicon.png')) ?>"/> <a href="<?= $block->escapeUrl($block->getPoptinRedirectToLoginUrl()) ?>" target="_blank"
                class="ppcontrolpanel goto_dashboard_button_pp_updatable"><?= $block->escapeHtml(__("Go to Dashboard")) ?></a> <a href="#logout" class="pplogout">
       <?= $block->escapeHtml(__("Deactivate Poptin")) ?>
       </a> </div>

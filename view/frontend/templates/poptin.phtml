@@ -1,7 +1,8 @@
-<?php 
+<?php
 if (!empty($block->getConfig('poptin_settings/poptin/poptin_client_id'))) :
     $client_id = $block->getConfig('poptin_settings/poptin/poptin_client_id');
-    $embedType = $block->getConfig('poptin_settings/poptin/poptin_etype');
+    // Default to "2" (After Page Load) when unset — avoids PHP 8.4 null array offset deprecation
+    $embedType = (string)($block->getConfig('poptin_settings/poptin/poptin_etype') ?: '2');
 
     $poptin_etype_arr = [
         "1" => "<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=" . $block->escapeJsQuote($client_id) . "' async='true'></script>\n",
@@ -11,5 +12,5 @@ if (!empty($block->getConfig('poptin_settings/poptin/poptin_client_id'))) :
                "<script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=" . $block->escapeJsQuote($client_id) . "' async='true'></script>\n",
     ];
 ?>
-<?= /* @noEscape */ $poptin_etype_arr[$embedType] ?? '' ?>
+<?= /* @noEscape */ $poptin_etype_arr[$embedType] ?? $poptin_etype_arr['2'] ?>
 <?php endif; ?>

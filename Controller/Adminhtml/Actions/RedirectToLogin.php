@@ -39,15 +39,13 @@ class RedirectToLogin extends \Magento\Backend\App\Action
         $poptinToken = $this->_configHelper->getPoptinToken();
         if (!empty($poptinUserId) && !empty($poptinToken)) {
             $apiResult = $this->_poptinApi->authorizeAccount($poptinToken, $poptinUserId);
-            if ($apiResult['success']) {
+            if (is_array($apiResult) && !empty($apiResult['success']) && !empty($apiResult['login_url'])) {
                 $this->_configHelper->setPoptinLoginUrl($apiResult['login_url']);
-                $urlToRedirect = $apiResult['login_url'];
-				$urlToRedirect .= '&utm_source=magento2';
+                $urlToRedirect = $apiResult['login_url'] . '&utm_source=magento2';
             }
-			
         }
         $resultRedirect = $this->resultRedirectFactory->create();
-        $resultRedirect->setPath($urlToRedirect);
+        $resultRedirect->setUrl($urlToRedirect);
         return $resultRedirect;
     }
 }

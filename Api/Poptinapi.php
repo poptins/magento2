@@ -52,31 +52,23 @@ class Poptinapi
             $body = http_build_query(
                 [
                     'email' => $userEmail,
-                'marketplace' => 'Mgnto2']
+                    'marketplace' => 'Mgnto2']
             );
 
-            // $client->write(\Zend_Http_Client::POST, $url, '1.1', $headers, $body);
-            $client->write(\Laminas\Http\Request::METHOD_POST, $url, '1.1', $headers, $body);
+            // Use plain HTTP method string to avoid Laminas class coupling on Magento 2.4.9+
+            $client->write('POST', $url, '1.1', $headers, $body);
 
             $response = $client->read();
             $client->close();
 
-            // Parse response
-            // $responseBody = \Zend_Http_Response::extractBody($response);
-            //$responseBody = \Laminas\Http\Response::extractBody($response);
+            $responseBody = $this->extractResponseBody($response);
+            if ($responseBody === '') {
+                $this->log->error('Poptin register API returned an empty or unparseable response.');
+                return false;
+            }
 
-            // $responseCode = \Zend_Http_Response::extractCode($response);
-           // $responseCode = \Laminas\Http\Response::extractCode($response);
-
-            // Split headers and body
-            list($headers, $body) = explode("\r\n\r\n", $response, 2);
-
-            // Extract status code (optional, if you want to log/validate)
-            preg_match('/HTTP\/\d\.\d\s+(\d+)/', $headers, $matches);
-            $responseCode = $matches[1] ?? 0; 
-           
-            $apiResult = $this->jsonHelperUnserialize($body);
-            return $apiResult;
+            $apiResult = $this->jsonHelperUnserialize($responseBody);
+            return is_array($apiResult) ? $apiResult : false;
         } catch (\Exception $e) {
             $this->log->error($e->getMessage());
             return false;
@@ -95,37 +87,49 @@ class Poptinapi
                 "Content-Type: application/x-www-form-urlencoded"];
             $body = http_build_query(['token' => $token, 'user_id' => $user_id]);
 
-            // $client->write(\Zend_Http_Client::POST, $url, '1.1', $headers, $body);
-            $client->write(\Laminas\Http\Request::METHOD_POST, $url, '1.1', $headers, $body);
+            // Use plain HTTP method string to avoid Laminas class coupling on Magento 2.4.9+
+            $client->write('POST', $url, '1.1', $headers, $body);
             $response = $client->read();
             $client->close();
 
-            // Parse response
-            // $responseBody = \Zend_Http_Response::extractBody($response);
-            // $responseBody = \Laminas\Http\Response::extractBody($response);
+            $responseBody = $this->extractResponseBody($response);
+            if ($responseBody === '') {
+                $this->log->error('Poptin auth API returned an empty or unparseable response.');
+                return false;
+            }
 
-            // $responseCode = \Zend_Http_Response::extractCode($response);
-            // $responseCode = \Laminas\Http\Response::extractCode($response);
-
-           // Split headers and body
-            list($headers, $body) = explode("\r\n\r\n", $response, 2);
-
-            // Extract status code (optional, if you want to log/validate)
-            preg_match('/HTTP\/\d\.\d\s+(\d+)/', $headers, $matches);
-            $responseCode = $matches[1] ?? 0;     
-
-            $apiResult = $this->jsonHelperUnserialize($body);
-            return $apiResult;
+            $apiResult = $this->jsonHelperUnserialize($responseBody);
+            return is_array($apiResult) ? $apiResult : false;
         } catch (\Exception $e) {
             $this->log->error($e->getMessage());
             return false;
         }
     }
 
+    /**
+     * Split raw HTTP response into body safely (supports intermediate headers / LF-only separators).
+     *
+     * @param string|false $response
+     * @return string
+     */
+    private function extractResponseBody($response)
+    {
+        if (!is_string($response) || $response === '') {
+            return '';
+        }
+
+        $parts = preg_split("/\r\n\r\n|\n\n/", $response);
+        if (!is_array($parts) || $parts === []) {
+            return '';
+        }
+
+        $body = end($parts);
+        return is_string($body) ? trim($body) : '';
+    }
 
     /**
      * @param mixed $data
-     * @return string
+     * @return array|bool|float|int|mixed|string|null
      */
     private function jsonHelperUnserialize($data)
     {

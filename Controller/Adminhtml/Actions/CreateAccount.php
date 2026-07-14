@@ -37,16 +37,21 @@ class CreateAccount extends \Magento\Backend\App\Action
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
+        $email = $data['email'] ?? '';
 
-        $apiResult = $this->poptinApi->createAccount($data['email']);
+        $apiResult = $this->poptinApi->createAccount($email);
 
-        if (!$apiResult['success']) {
-            $this->messageManager->addErrorMessage($apiResult['message']);
+        if (is_array($apiResult) && !empty($apiResult['success'])) {
+            $this->configHelper->setPoptinUserId($apiResult['user_id'] ?? '');
+            $this->configHelper->setPoptinToken($apiResult['token'] ?? '');
+            $this->configHelper->setPoptinClientId($apiResult['client_id'] ?? '');
+            $this->configHelper->setPoptinLoginUrl($apiResult['login_url'] ?? '');
+        } elseif (is_array($apiResult)) {
+            $this->messageManager->addErrorMessage(
+                $apiResult['message'] ?? __('Unable to create Poptin account.')
+            );
         } else {
-            $this->configHelper->setPoptinUserId($apiResult['user_id']);
-            $this->configHelper->setPoptinToken($apiResult['token']);
-            $this->configHelper->setPoptinClientId($apiResult['client_id']);
-            $this->configHelper->setPoptinLoginUrl($apiResult['login_url']);
+            $this->messageManager->addErrorMessage(__('Unable to connect to Poptin API. Please try again later.'));
         }
 
         $resultRedirect = $this->resultRedirectFactory->create();

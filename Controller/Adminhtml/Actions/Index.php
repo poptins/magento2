@@ -57,10 +57,15 @@ class Index extends \Magento\Backend\App\Action
         $poptinToken = $this->_configHelper->getPoptinToken();
         if (!empty($poptinUserId) && !empty($poptinToken)) {
             $apiResult = $this->_poptinapi->authorizeAccount($poptinToken, $poptinUserId);
-            if ($apiResult['success']) {
-                $this->_configHelper->setPoptinLoginUrl($apiResult['login_url']);
+            if (is_array($apiResult) && !empty($apiResult['success'])) {
+                $this->_configHelper->setPoptinLoginUrl($apiResult['login_url'] ?? '');
+            } elseif (is_array($apiResult)) {
+                $this->messageManager->addErrorMessage(
+                    $apiResult['message'] ?? __('Poptin authorization failed.')
+                );
             } else {
-                $this->messageManager->addErrorMessage($apiResult['message']);
+                // Do not block the admin page from rendering when the remote API is unreachable
+                $this->messageManager->addErrorMessage(__('Unable to connect to Poptin API. Please try again later.'));
             }
         }
         return $this->resultPageFactory->create();

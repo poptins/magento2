@@ -5,7 +5,7 @@
 			<poptin>
 				<poptin_user_id/>
 				<poptin_client_id/>
-				<poptin_etype/>
+				<poptin_etype>2</poptin_etype>
 				<token/>
 			</poptin>
 		</poptin_settings>
